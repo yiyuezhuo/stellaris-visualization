@@ -1,0 +1,6 @@
+{
+  "name": "Stellaris-visualization",
+  "tagline": "",
+  "body": "# Stellaris Data Visualization\r\n\r\nParadox's excelent game Stellaris setting data file viaualization project.\r\n\r\n## DDS to PNG\r\n\r\nStellaris use non-compressed `.dds` file save image. I forked python package `pilgrim` and add \r\nfunction to do it.\r\n\r\nhttps://github.com/yiyuezhuo/pilgrim\r\n\r\nthen call `dds_to_png.py` as:\r\n\r\n```python\r\ndds_to_png_map(input_path, output_path)\r\n```\r\n\r\n## Technology Dependency Force Graph\r\n\r\nCreated by `d3.js`.\r\n\r\n",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
