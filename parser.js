@@ -1,193 +1,214 @@
-var fs = require('fs');
-var data = fs.readFileSync('00_eng_tech.txt', 'utf-8');
 //console.log(data.split('\n')[0]);
 
-spaceChar = ' ';
-quoteChar = '"';
-commentChar = '#';
+parser = (function(){
+  var spaceChar = ' ';
+  var quoteChar = '"';
+  var commentChar = '#';
+  
+  var nifixList = ['=','<','>','<=','>='];
 
-mode = {
-  ready : 0,
-  section : 1,
-  quote : 2
-}
+  var mode = {
+    ready : 0,
+    section : 1,
+    quote : 2
+  }
 
-function cutLine(line){
-  var wordList = [],
-      state = mode.ready,
-      word = [],
-      i;
-  //line = line + ' '; // similation \n removed by gloabal split
-  line = line.replace(/\r/g,' ');
-  line = line.replace(/\t/g,' ');
-  for(i = 0; i < line.length; i++){
-    if(state === mode.ready){
-      if(line[i] === spaceChar){
-        state = mode.ready;
+  function cutLine(line){
+    var wordList = [],
+        state = mode.ready,
+        word = [],
+        i;
+    //line = line + ' '; // similation \n removed by gloabal split
+    line = line.replace(/\r/g,' ');
+    line = line.replace(/\t/g,' ');
+    line = line + ' ';
+    for(i = 0; i < line.length; i++){
+      if(state === mode.ready){
+        if(line[i] === spaceChar){
+          state = mode.ready;
+        }
+        else if(line[i] === quoteChar){
+          state = mode.quote;
+        }
+        else if(line[i] === commentChar){
+          break;
+        }
+        else{
+          word.push(line[i]);
+          state = mode.section;
+        }
       }
-      else if(line[i] === quoteChar){
-        state = mode.quote;
+      else if(state === mode.section){
+        if(line[i] === spaceChar){
+          state = mode.ready;
+          wordList.push(word.join(''));
+          word = [];
+        }
+        else if(line[i] === quoteChar){
+          //throw new Error('section mode shoult not meet quote char');
+          wordList.push(word.join(''));
+          word = [];
+          state = mode.quote;
+        }
+        else if(line[i] === commentChar){
+          wordList.push(word.join(''));
+          word = [];
+          break;
+        }
+        else{
+          word.push(line[i]);
+        }
       }
-      else if(line[i] === commentChar){
-        break;
+      else if(state === mode.quote){
+        if(line[i] === spaceChar){
+          word.push(line[i]);
+        }
+        else if(line[i] === quoteChar){
+          wordList.push(word.join(''));
+          word = [];
+          state = mode.ready;
+        }
+        else if(line[i] === commentChar){
+          word.push(line[i]);
+        }
+        else{
+          word.push(line[i]);
+        }
+      }
+    }
+    return wordList;
+  }
+
+
+
+  function parseBlock(wordList){
+    var rStack = [],
+        i,j = 0,
+        stackLeftBrace = [];
+    for(i = 0; i < wordList.length; i++){
+      if(wordList[i] === '{'){
+        rStack.push(wordList[i]);
+        stackLeftBrace.push(j);
+        j++;
+      }
+      else if(wordList[i] === '}'){
+        var lastLeftBrace = stackLeftBrace.pop();
+        rStack.push(wordList[i]);
+        rStack.push(rStack.splice(lastLeftBrace, rStack.length));
+        j = lastLeftBrace + 1;
       }
       else{
-        word.push(line[i]);
-        state = mode.section;
+        rStack.push(wordList[i]);
+        j++;
       }
     }
-    else if(state === mode.section){
-      if(line[i] === spaceChar){
-        state = mode.ready;
-        wordList.push(word.join(''));
-        word = [];
-      }
-      else if(line[i] === quoteChar){
-        throw new Error('section mode shoult not meet quote char');
-      }
-      else if(line[i] === commentChar){
-        wordList.push(word.join(''));
-        word = [];
-        break;
+    return rStack;
+  }
+
+  function isNumber(obj){
+    if(obj !== null && !isNaN(obj)){
+      return true;
+    }
+    return false;
+  }
+
+  function isArray(obj) { 
+    return Object.prototype.toString.call(obj) === '[object Array]';   
+  }
+
+
+  function parseNifix(wordBlock){
+    var i = 0,
+        stack = [];
+    if(!isArray(wordBlock)){
+      return wordBlock;
+    }
+    while(i < wordBlock.length){
+      
+      if(nifixList.indexOf(wordBlock[i]) === -1){
+        stack.push(parseNifix(wordBlock[i]));
+        i += 1;
       }
       else{
-        word.push(line[i]);
+        stack.push([wordBlock[i], stack.pop(), parseNifix(wordBlock[i+1])]);
+        i += 2;
       }
     }
-    else if(state === mode.quote){
-      if(line[i] === spaceChar){
-        word.push(line[i]);
-      }
-      else if(line[i] === quoteChar){
-        wordList.push(word.join(''));
-        word = [];
-        state = mode.ready;
-      }
-      else if(line[i] === commentChar){
-        word.push(line[i]);
-      }
-      else{
-        word.push(line[i]);
+    return stack;
+  }
+
+
+  function eqFind(tree, key){
+    var i;
+    for(i = 0; i < tree.length; i++){
+      if(tree[i][0] === '=' && tree[i][1] === key){
+        return tree[i][2];
       }
     }
   }
-  return wordList;
-}
 
-var lines = data.split('\n');
-var wordLines = lines.map(cutLine);
-wordChain = Array.prototype.concat.apply([],wordLines);
-
-
-function parseBlock(wordList){
-  var rStack = [],
-      i,j = 0,
-      stackLeftBrace = [];
-  for(i = 0; i < wordList.length; i++){
-    if(wordList[i] === '{'){
-      rStack.push(wordList[i]);
-      stackLeftBrace.push(j);
-      j++;
+  function eqFindAll(tree, key){
+    var rl = [],
+        i;
+    for(i = 0; i < tree.length; i++){
+      if(tree[i][0] === '=' && tree[i][1] === key){
+        rl.push(tree[i][2]);
+      }
     }
-    else if(wordList[i] === '}'){
-      var lastLeftBrace = stackLeftBrace.pop();
-      rStack.push(wordList[i]);
-      rStack.push(rStack.splice(lastLeftBrace, rStack.length));
-      j = lastLeftBrace + 1;
-    }
-    else{
-      rStack.push(wordList[i]);
-      j++;
-    }
+    return rl;
   }
-  return rStack;
-}
 
-function isNumber(obj){
-  if(obj !== null && !isNaN(obj)){
-    return true;
+  function AST(tree){
+    this.tree = tree;
   }
-  return false;
-}
-
-function isArray(obj) { 
-  return Object.prototype.toString.call(obj) === '[object Array]';   
-}
-
-var nifixList = ['=','<','>','<=','>='];
-
-function parseNifix(wordBlock){
-  var i = 0,
-      stack = [];
-  if(!isArray(wordBlock)){
-    return wordBlock;
+  AST.prototype.find = function(key){
+    return new AST(eqFind(this.tree, key));
   }
-  while(i < wordBlock.length){
-    
-    if(nifixList.indexOf(wordBlock[i]) === -1){
-      stack.push(parseNifix(wordBlock[i]));
-      i += 1;
-    }
-    else{
-      stack.push([wordBlock[i], stack.pop(), parseNifix(wordBlock[i+1])]);
-      i += 2;
-    }
-  }
-  return stack;
-}
-
-wordBlock = parseBlock(wordChain);
-wordTree = parseNifix(wordBlock);
-
-function eqFind(tree, key){
-  var i;
-  for(i = 0; i < tree.length; i++){
-    if(tree[i][0] === '=' && tree[i][1] === key){
-      return tree[i][2];
-    }
-  }
-}
-
-function eqFindAll(tree, key){
-  var rl = [],
-      i;
-  for(i = 0; i < tree.length; i++){
-    if(tree[i][0] === '=' && tree[i][1] === key){
-      rl.push(tree[i][2]);
-    }
-  }
-  return rl;
-}
-
-function AST(tree){
-  this.tree = tree;
-}
-AST.prototype.find = function(key){
-  return new AST(eqFind(this.tree, key));
-}
-AST.prototype.findall = function(key){
-  return eqFindAll(this.tree).map(function(subtree){
-    return new AST(subtree);
-  });
-}
-AST.prototype.value = function(){
-  if(isNumber(this.tree)){
-    return Number(this.tree);
-  }
-  else if(isArray(this.tree) && this.tree[0] === '{'){
-    var value = this.tree.map(function(obj){
-      var obj2 = new AST(obj);
-      return obj2.value();
+  AST.prototype.findall = function(key){
+    return eqFindAll(this.tree).map(function(subtree){
+      return new AST(subtree);
     });
-    return value.slice(1, value.length - 1);
   }
-  return this.tree;
-}
+  AST.prototype.value = function(){
+    if(isNumber(this.tree)){
+      return Number(this.tree);
+    }
+    else if(isArray(this.tree) && this.tree[0] === '{'){
+      var value = this.tree.map(function(obj){
+        var obj2 = new AST(obj);
+        return obj2.value();
+      });
+      return value.slice(1, value.length - 1);
+    }
+    return this.tree;
+  }
 
-global.eqFind = eqFind;
-global.eqFindAll = eqFindAll;
+  function parse(data){
+    //var data = fs.readFileSync('00_eng_tech.txt', 'utf-8');
+    var lines = data.split('\n');
+    var wordLines = lines.map(cutLine);
+    var wordChain = Array.prototype.concat.apply([],wordLines);
+    var wordBlock = parseBlock(wordChain);
+    var wordTree = parseNifix(wordBlock);
+    return wordTree
+  }
 
-tree = new AST(wordTree);
+  function test(){
+    var fs = require('fs');
+    var data = fs.readFileSync('00_eng_tech.txt', 'utf-8');
+    var tree = new AST(parse(data));
 
-const repl = require('repl');
-repl.start('> ');
+    const repl = require('repl');
+    repl.start('> ');
+  }
+  
+  return {parse : parse,
+          cutLine : cutLine,
+          AST : AST
+          
+          };
+
+}());
+//global.eqFind = eqFind;
+//global.eqFindAll = eqFindAll;
+
