@@ -3,8 +3,8 @@
 ### TECH COSTS - REPEATABLE  ###
 ###########################
 
-@repeatableTechBaseCost = 1500
-@repeatableTechLevelCost = 480
+@repeatableTechBaseCost = 1400
+@repeatableTechLevelCost = 400
 
 
 ###########################
@@ -19,7 +19,7 @@ tech_repeatable_improved_tile_energy_output = {
 	area = physics
 	cost = @repeatableTechBaseCost
 	cost_per_level = @repeatableTechLevelCost
-	tier = 2
+	tier = 3
 	category = { industry }
 	levels = -1
 	prerequisites = {"tech_power_plant_3"}
@@ -49,11 +49,11 @@ tech_repeatable_improved_shield_output = {
 	area = physics
 	cost = @repeatableTechBaseCost
 	cost_per_level = @repeatableTechLevelCost
-	tier = 2
+	tier = 3
 	category = { field_manipulation }
 	ai_update_type = all
 	levels = -1
-	prerequisites = {"tech_shields_2"}
+	prerequisites = {"tech_shields_4"}
 	weight = @repeatableTechWeight
 	
 	weight_modifier = {
@@ -80,11 +80,11 @@ tech_repeatable_weapon_type_energy_damage = {
 	area = physics
 	cost = @repeatableTechBaseCost
 	cost_per_level = @repeatableTechLevelCost
-	tier = 2
+	tier = 3
 	category = { particles }
 	ai_update_type = military
 	levels = -1
-	prerequisites = {"tech_lasers_2"}
+	prerequisites = {"tech_lasers_4"}
 	weight = @repeatableTechWeight
 	
 	weight_modifier = {
@@ -111,7 +111,7 @@ tech_repeatable_weapon_type_energy_fire_rate = {
 	area = physics
 	cost = @repeatableTechBaseCost
 	cost_per_level = @repeatableTechLevelCost
-	tier = 2
+	tier = 3
 	category = { particles }
 	ai_update_type = military
 	levels = -1
@@ -142,7 +142,7 @@ tech_repeatable_improved_planet_sensor_range = {
 	area = physics
 	cost = @repeatableTechBaseCost
 	cost_per_level = @repeatableTechLevelCost
-	tier = 2
+	tier = 3
 	category = { voidcraft }
 	ai_update_type = all
 	levels = -1
@@ -173,7 +173,7 @@ tech_repeatable_reduced_building_cost = {
 	area = physics
 	cost = @repeatableTechBaseCost
 	cost_per_level = @repeatableTechLevelCost
-	tier = 2
+	tier = 3
 	category = { computing }
 	levels = 5
 	prerequisites = { "tech_physics_lab_2" }
@@ -203,7 +203,7 @@ tech_repeatable_reduced_building_time = {
 	area = physics
 	cost = @repeatableTechBaseCost
 	cost_per_level = @repeatableTechLevelCost
-	tier = 2
+	tier = 3
 	category = { computing }
 	levels = 10
 	prerequisites = { "tech_physics_lab_2" }

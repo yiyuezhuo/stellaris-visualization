@@ -3,20 +3,20 @@
 ##################
 #If you change any of these, use replace in files so the values are the same across all files
 
-@tier1cost1 = 240
-@tier1cost2 = 360
-@tier1cost3 = 480
-@tier1cost4 = 600
+@tier1cost1 = 360
+@tier1cost2 = 480
+@tier1cost3 = 600
+@tier1cost4 = 720
 
-@tier2cost1 = 900
-@tier2cost2 = 1200
-@tier2cost3 = 1500
-@tier2cost4 = 1800
+@tier2cost1 = 1000
+@tier2cost2 = 1400
+@tier2cost3 = 1800
+@tier2cost4 = 2200
 
-@tier3cost1 = 2320
-@tier3cost2 = 2840
-@tier3cost3 = 3360
-@tier3cost4 = 3880
+@tier3cost1 = 3000
+@tier3cost2 = 4000
+@tier3cost3 = 5000
+@tier3cost4 = 6000
 
 ####################
 ### TECH WEIGHTS ###
@@ -55,6 +55,7 @@ tech_mine_garanthium = {
 	weight = @tier1weight3
 	
 	weight_modifier = {
+		factor = 2 #strategic resource
 		modifier = {
 			factor = 2
 			research_leader = {
@@ -64,16 +65,22 @@ tech_mine_garanthium = {
 		}
 		modifier = {
 			factor = 0
-			NOT = {
+			NOR = {
 				any_system_within_border = {
 					is_in_cluster = resource_cluster_0 #Garanthium cluster
+				}
+				any_country = {
+					AND = {
+						has_communications = ROOT
+						has_technology = "tech_mine_garanthium"
+					}
 				}
 			}
 		}
 	}
 	
 	ai_weight = {
-		factor = 2 #strategic resource
+		factor = 5 #strategic resource
 		modifier = {
 			factor = 1.25
 			research_leader = {
@@ -96,6 +103,7 @@ tech_lythuric_gas = {
 	## unlock see lythuric gas
 	
 	weight_modifier = {
+		factor = 2 #strategic resource
 		modifier = {
 			factor = 2
 			research_leader = {
@@ -105,16 +113,22 @@ tech_lythuric_gas = {
 		}
 		modifier = {
 			factor = 0
-			NOT = {
+			NOR = {
 				any_system_within_border = {
 					is_in_cluster = resource_cluster_1 #Lythuric cluster
+				}
+				any_country = {
+					AND = {
+						has_communications = ROOT
+						has_technology = "tech_lythuric_gas"
+					}
 				}
 			}
 		}
 	}
 	
 	ai_weight = {
-		factor = 2 #strategic resource
+		factor = 5 #strategic resource
 		modifier = {
 			factor = 1.25
 			research_leader = {
@@ -135,6 +149,7 @@ tech_engos_vapor = {
 	weight = @tier1weight3
 	
 	weight_modifier = {
+		factor = 2 #strategic resource
 		modifier = {
 			factor = 2
 			research_leader = {
@@ -144,16 +159,22 @@ tech_engos_vapor = {
 		}
 		modifier = {
 			factor = 0
-			NOT = {
+			NOR = {
 				any_system_within_border = {
 					is_in_cluster = resource_cluster_2 #Engos cluster
+				}
+				any_country = {
+					AND = {
+						has_communications = ROOT
+						has_technology = "tech_engos_vapor"
+					}
 				}
 			}
 		}
 	}
 	
 	ai_weight = {
-		factor = 2 #strategic resource
+		factor = 5 #strategic resource
 		modifier = {
 			factor = 1.25
 			research_leader = {
@@ -174,6 +195,7 @@ tech_mine_teldar = {
 	weight = @tier1weight3
 	
 	weight_modifier = {
+		factor = 2 #strategic resource
 		modifier = {
 			factor = 2
 			research_leader = {
@@ -183,16 +205,22 @@ tech_mine_teldar = {
 		}
 		modifier = {
 			factor = 0
-			NOT = {
+			NOR = {
 				any_system_within_border = {
 					is_in_cluster = resource_cluster_3 #Teldar cluster
+				}
+				any_country = {
+					AND = {
+						has_communications = ROOT
+						has_technology = "tech_mine_teldar"
+					}
 				}
 			}
 		}
 	}
 	
 	ai_weight = {
-		factor = 2 #strategic resource
+		factor = 5 #strategic resource
 		modifier = {
 			factor = 1.25
 			research_leader = {
@@ -215,6 +243,7 @@ tech_pitharan_dust = {
 	weight = @tier1weight3
 	
 	weight_modifier = {
+		factor = 2 #strategic resource
 		modifier = {
 			factor = 2
 			research_leader = {
@@ -224,16 +253,22 @@ tech_pitharan_dust = {
 		}
 		modifier = {
 			factor = 0
-			NOT = {
+			NOR = {
 				any_system_within_border = {
 					is_in_cluster = resource_cluster_4 #Pitharan cluster
+				}
+				any_country = {
+					AND = {
+						has_communications = ROOT
+						has_technology = "tech_pitharan_dust"
+					}
 				}
 			}
 		}
 	}
 	
 	ai_weight = {
-		factor = 2 #strategic resource
+		factor = 5 #strategic resource
 		modifier = {
 			factor = 1.25
 			research_leader = {
@@ -254,6 +289,7 @@ tech_mine_orillium = {
 	weight = @tier1weight3
 	
 	weight_modifier = {
+		factor = 2 #strategic resource
 		modifier = {
 			factor = 2
 			research_leader = {
@@ -263,16 +299,22 @@ tech_mine_orillium = {
 		}
 		modifier = {
 			factor = 0
-			NOT = {
+			NOR = {
 				any_system_within_border = {
 					is_in_cluster = resource_cluster_5 #Orillium cluster
+				}
+				any_country = {
+					AND = {
+						has_communications = ROOT
+						has_technology = "tech_mine_orillium"
+					}
 				}
 			}
 		}
 	}
 	
 	ai_weight = {
-		factor = 2 #strategic resource
+		factor = 5 #strategic resource
 		modifier = {
 			factor = 1.25
 			research_leader = {
@@ -289,16 +331,17 @@ tech_mine_orillium = {
 
 #Neutronium Extraction 
 tech_mine_neutronium = {
-	cost = @tier3cost3
+	cost = @tier3cost2
 	area = physics
 	tier = 3
 	category = { materials }
 	prerequisites = { "tech_sensors_4" }
-	weight = @tier3weight3
+	weight = @tier3weight2
 		
 	## unlock see neutronium ore
 	
 	weight_modifier = {
+		factor = 2 #strategic resource
 		modifier = {
 			factor = 1.5
 			research_leader = {
@@ -309,7 +352,7 @@ tech_mine_neutronium = {
 	}
 	
 	ai_weight = {
-		factor = 2 #strategic resource
+		factor = 5 #strategic resource
 		modifier = {
 			factor = 1.25
 			research_leader = {
@@ -336,26 +379,39 @@ tech_mine_living_metal = {
 
 #Betharian Refining
 tech_mine_betharian = {
-	cost = @tier1cost2
+	cost = @tier1cost1
 	area = engineering
 	tier = 1
-	category = { industry }	
+	category = { industry }
 	prerequisites = { "tech_space_construction" }
-	weight = @tier1weight2
+	weight = @tier1weight1
 	
 	weight_modifier = {
-		factor = 0.75
+		factor = 2
 		modifier = {
 			factor = 2
 			research_leader = {
 				area = engineering
 				has_trait = "leader_trait_expertise_industry"
 			}
-		}	
+		}
+		modifier = {
+			factor = 0
+			NOT = {
+				any_owned_planet = {
+					any_tile = {
+						has_resource = {
+							type = sr_betharian
+							amount > 0
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	ai_weight = {
-		factor = 2 #strategic resource
+		factor = 4 #strategic resource
 		modifier = {
 			factor = 1.25
 			research_leader = {
@@ -380,18 +436,23 @@ tech_mine_zro = {
 	weight_modifier = {
 		modifier = {
 			factor = 0.10
-			NOT = {
+			NOR = {
 				research_leader = {
 					area = physics
-					OR = {
-						has_trait = "leader_trait_expertise_materials"
-						has_trait = "leader_trait_expertise_psionics"
-					}
+					has_trait = "leader_trait_expertise_psionics"
+				}
+				research_leader = {
+					area = physics
+					has_trait = "leader_trait_expertise_materials"
+				}
+				research_leader = {
+					area = physics
+					has_trait = "leader_trait_curator"
 				}
 			}
 		}
 		modifier = {
-			factor = 2
+			factor = 10
 			research_leader = {
 				area = physics
 				has_trait = "leader_trait_expertise_psionics"
@@ -404,7 +465,7 @@ tech_mine_zro = {
 		modifier = {
 			factor = 1.25
 			research_leader = {
-				area = society
+				area = physics
 				has_trait = "leader_trait_expertise_psionics"
 			}
 		}
@@ -421,6 +482,7 @@ tech_mine_satramene = {
 	weight = @tier2weight1
 	
 	weight_modifier = {
+		factor = 2 #strategic resource
 		modifier = {
 			factor = 2
 			research_leader = {
@@ -431,7 +493,7 @@ tech_mine_satramene = {
 	}
 	
 	ai_weight = {
-		factor = 2 #strategic resource
+		factor = 5 #strategic resource
 		modifier = {
 			factor = 1.25
 			research_leader = {
@@ -464,7 +526,7 @@ tech_mine_dark_matter = {
 	}	
 	
 	ai_weight = {
-		factor = 2 #strategic resource
+		factor = 5 #strategic resource
 		modifier = {
 			factor = 1.25
 			research_leader = {

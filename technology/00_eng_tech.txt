@@ -3,20 +3,20 @@
 ##################
 #If you change any of these, use replace in files so the values are the same across all files
 
-@tier1cost1 = 240
-@tier1cost2 = 360
-@tier1cost3 = 480
-@tier1cost4 = 600
+@tier1cost1 = 360
+@tier1cost2 = 480
+@tier1cost3 = 600
+@tier1cost4 = 720
 
-@tier2cost1 = 900
-@tier2cost2 = 1200
-@tier2cost3 = 1500
-@tier2cost4 = 1800
+@tier2cost1 = 1000
+@tier2cost2 = 1400
+@tier2cost3 = 1800
+@tier2cost4 = 2200
 
-@tier3cost1 = 2320
-@tier3cost2 = 2840
-@tier3cost3 = 3360
-@tier3cost4 = 3880
+@tier3cost1 = 3000
+@tier3cost2 = 4000
+@tier3cost3 = 5000
+@tier3cost4 = 6000
 
 ####################
 ### TECH WEIGHTS ###
@@ -77,6 +77,8 @@ tech_spaceport_2 = {
 	prerequisites = { "tech_space_construction" }
 	weight = @tier1weight3
 	
+	gateway = ship
+	
 	modifier = {
 		max_minerals = 2000
 	}
@@ -130,6 +132,8 @@ tech_spaceport_3 = {
 	category = { voidcraft }	
 	prerequisites = { "tech_spaceport_2" }
 	weight = @tier2weight1
+	
+	gateway = ship
 	
 	## unlock destroyer	
 	prereqfor_desc = {
@@ -196,6 +200,8 @@ tech_spaceport_4 = {
 	category = { voidcraft }	
 	prerequisites = { "tech_spaceport_3" }
 	weight = @tier2weight2
+	
+	gateway = ship
 		
 	modifier = {
 		max_minerals = 2000
@@ -253,7 +259,9 @@ tech_spaceport_5 = {
 	tier = 2
 	category = { voidcraft }	
 	prerequisites = { "tech_spaceport_4" }
-	weight = @tier2weight4	
+	weight = @tier2weight4
+	
+	gateway = ship
 		
 	## unlock cruisers	
 	prereqfor_desc = {
@@ -380,12 +388,12 @@ tech_spaceport_6 = {
 }
 
 tech_cruiser_yard = {
-	cost = @tier2cost4
+	cost = @tier2cost1
 	area = engineering
 	tier = 2
 	category = { voidcraft }	
 	prerequisites = { "tech_spaceport_5" }
-	weight = @tier2weight4
+	weight = @tier2weight1
 		
 	## unlock cruiser assembly yard
 	
@@ -411,12 +419,12 @@ tech_cruiser_yard = {
 }
 
 tech_battleship_yard = {
-	cost = @tier3cost3
+	cost = @tier2cost4
 	area = engineering
 	tier = 2
 	category = { voidcraft }	
 	prerequisites = { "tech_spaceport_6" }
-	weight = @tier3weight3
+	weight = @tier2weight4
 		
 	## unlock battleship assembly yard
 	
@@ -446,13 +454,13 @@ tech_battleship_yard = {
 # ##################
 
 tech_strike_craft_1 = {
-	cost = @tier2cost3
+	cost = @tier2cost1
 	area = engineering
 	tier = 2
 	ai_update_type = military
 	category = { voidcraft }	
 	prerequisites = { "tech_spaceport_5" }
-	weight = @tier2weight3
+	weight = @tier2weight1
 	
 	weight_modifier = {
 		modifier = {
@@ -478,13 +486,13 @@ tech_strike_craft_1 = {
 }
 
 tech_strike_craft_2 = {
-	cost = @tier2cost4
+	cost = @tier2cost2
 	area = engineering
 	tier = 2
 	ai_update_type = military
 	category = { voidcraft }	
 	prerequisites = { "tech_strike_craft_1" }
-	weight = @tier2weight4
+	weight = @tier2weight2
 	
 	weight_modifier = {
 		modifier = {
@@ -510,13 +518,13 @@ tech_strike_craft_2 = {
 }
 
 tech_strike_craft_3 = {
-	cost = @tier3cost2
+	cost = @tier2cost4
 	area = engineering
-	tier = 3
+	tier = 2
 	ai_update_type = military
 	category = { voidcraft }	
 	prerequisites = { "tech_strike_craft_2" }
-	weight = @tier3weight2
+	weight = @tier2weight4
 	
 	weight_modifier = {
 		modifier = {
@@ -690,12 +698,12 @@ tech_ship_armor_4 = {
 #Neutronium Materials
 tech_ship_armor_5 = {
 	area = engineering
-	cost = @tier3cost4
+	cost = @tier3cost3
 	tier = 3
 	category = { materials }
 	ai_update_type = all	
 	prerequisites = { "tech_ship_armor_4" "tech_mine_neutronium" }
-	weight = @tier3weight4
+	weight = @tier3weight3
 	
 	weight_modifier = {
 		factor = 1.25
@@ -731,6 +739,12 @@ tech_crystal_armor_1 = {
 	category = { materials }
 	ai_update_type = all	
 	weight = 0
+	weight_modifier = {
+		modifier = {
+			add = 5
+			has_country_flag = crystal_armor_1_weight
+		}
+	}
 	
 	ai_weight = {
 		modifier = {
@@ -1110,10 +1124,14 @@ tech_space_defense_station_improvement = {
 	weight_modifier = {
 		modifier = {
 			factor = 0.25
-			NOT = {
+			NOR = {
 				research_leader = {
 					area = engineering
 					has_trait = "leader_trait_expertise_voidcraft"
+				}
+				research_leader = {
+					area = engineering
+					has_trait = "leader_trait_curator"
 				}
 			}
 		}
@@ -1160,6 +1178,8 @@ tech_powered_exoskeletons = {
 	category = { industry }	
 	prerequisites = { "tech_basic_industry" }
 	weight = @tier1weight1
+	
+	gateway = robotics
 	
 	modifier = {
 		army_damage_mult = 0.05
@@ -1524,6 +1544,8 @@ tech_robotic_workers = {
 	category = { industry }	
 	prerequisites = { "tech_powered_exoskeletons" }
 	weight = @tier1weight3
+	
+	gateway = robotics
 		
 	## unlock robot POP lvl 1
 	
@@ -1570,8 +1592,9 @@ tech_droid_workers = {
 	tier = 2
 	category = { industry }
 	prerequisites = { "tech_robotic_workers" "tech_colonial_centralization" }
-	is_rare = yes
 	weight = @tier2weight1
+	
+	gateway = robotics
 	
 	## unlock robot POP lvl 2, robot Army lvl 1
 
@@ -1625,7 +1648,6 @@ tech_synthetic_workers = {
 	## unlock robot POP lvl 3, robot Army lvl 2
 	
 	weight_modifier = {
-		factor = 5	# Requires rare tech, so higher weight
 		modifier = {
 			factor = 0.2
 			has_ethic = "ethic_spiritualist"
@@ -1633,27 +1655,26 @@ tech_synthetic_workers = {
 		modifier = {
 			factor = 0.1
 			has_ethic = "ethic_fanatic_spiritualist"
-		}			
-		modifier = {
-			factor = 1.10
-			research_leader = {
-				area = society
-				has_trait = "leader_trait_maniacal"
-			}
 		}
 		modifier = {
-			factor = 1.20
-			research_leader = {
-				area = society
-				has_trait = "leader_trait_spark_of_genius"
-			}
-		}
-		modifier = {
-			factor = 1.25
-			research_leader = {
-				area = engineering
-				has_trait = "leader_trait_expertise_industry"
-				has_level > 2
+			factor = 0.10
+			NOR = {
+				research_leader = {
+					area = engineering
+					has_trait = "leader_trait_maniacal"
+				}
+				research_leader = {
+					area = engineering
+					has_trait = "leader_trait_spark_of_genius"
+				}
+				research_leader = {
+					area = engineering
+					has_trait = "leader_trait_curator"
+				}
+				research_leader = {
+					area = engineering
+					has_trait = "leader_trait_expertise_industry"
+				}
 			}
 		}
 	}
@@ -1698,25 +1719,23 @@ tech_synthetic_leaders = {
 		}		
 		modifier = {
 			factor = 0.10
-			NOT = {
+			NOR = {
+				research_leader = {
+					area = engineering
+					has_trait = "leader_trait_maniacal"
+				}
+				research_leader = {
+					area = engineering
+					has_trait = "leader_trait_spark_of_genius"
+				}
+				research_leader = {
+					area = engineering
+					has_trait = "leader_trait_curator"
+				}
 				research_leader = {
 					area = engineering
 					has_trait = "leader_trait_expertise_industry"
 				}
-			}
-		}
-		modifier = {
-			factor = 1.10
-			research_leader = {
-				area = society
-				has_trait = "leader_trait_maniacal"
-			}
-		}
-		modifier = {
-			factor = 1.20
-			research_leader = {
-				area = society
-				has_trait = "leader_trait_spark_of_genius"
 			}
 		}
 		modifier = {
@@ -1793,7 +1812,94 @@ tech_space_construction = {
 	## unlock construction ship, mining station, research station
 }
 
+# ##################
+# Afterburners
+# ##################
 
-# ##################
-# Aura Effects
-# ##################
+#Afterburners
+tech_afterburners_1 = {
+	area = engineering
+	cost = @tier2cost1
+	tier = 2
+	category = { rocketry }
+	ai_update_type = all	
+	prerequisites = { "tech_thrusters_2" }
+	weight = @tier2weight1
+	
+	weight_modifier = {
+		factor = 1.25
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_rocketry"
+			}
+		}
+		modifier = {
+			factor = 2
+			has_technology = tech_thrusters_2
+		}
+		modifier = {
+			factor = 2
+			has_technology = tech_thrusters_3
+		}
+	}
+	
+	prereqfor_desc = {
+		component = {
+			title = "TECH_UNLOCK_AFTERBURNER_1_TITLE"
+			desc = "TECH_UNLOCK_AFTERBURNER_1_DESC"
+		}
+	}
+	
+	ai_weight = {
+		factor = 2 #important component
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_rocketry"
+			}
+		}
+	}
+}
+
+#Advanced Afterburners
+tech_afterburners_2 = {
+	area = engineering
+	cost = @tier3cost1
+	tier = 3
+	category = { rocketry }
+	ai_update_type = all	
+	prerequisites = { "tech_afterburners_1" "tech_thrusters_3" }
+	weight = @tier3weight1
+	
+	weight_modifier = {
+		factor = 1.25
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_rocketry"
+			}
+		}
+	}
+	
+	prereqfor_desc = {
+		component = {
+			title = "TECH_UNLOCK_AFTERBURNER_2_TITLE"
+			desc = "TECH_UNLOCK_AFTERBURNER_2_DESC"
+		}
+	}
+	
+	ai_weight = {
+		factor = 1.25 #important component
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_rocketry"
+			}
+		}
+	}
+}

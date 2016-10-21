@@ -3,20 +3,20 @@
 ##################
 #If you change any of these, use replace in files so the values are the same across all files
 
-@tier1cost1 = 240
-@tier1cost2 = 360
-@tier1cost3 = 480
-@tier1cost4 = 600
+@tier1cost1 = 360
+@tier1cost2 = 480
+@tier1cost3 = 600
+@tier1cost4 = 720
 
-@tier2cost1 = 900
-@tier2cost2 = 1200
-@tier2cost3 = 1500
-@tier2cost4 = 1800
+@tier2cost1 = 1000
+@tier2cost2 = 1400
+@tier2cost3 = 1800
+@tier2cost4 = 2200
 
-@tier3cost1 = 2320
-@tier3cost2 = 2840
-@tier3cost3 = 3360
-@tier3cost4 = 3880
+@tier3cost1 = 3000
+@tier3cost2 = 4000
+@tier3cost3 = 5000
+@tier3cost4 = 6000
 
 ####################
 ### TECH WEIGHTS ###
@@ -138,8 +138,8 @@ tech_scourge_missile_1 = {
 # Space Whale Weapon
 tech_space_whale_weapon_1 = {
 	area = society
-	cost = @tier3cost3
-	tier = 3
+	cost = @tier1cost3
+	tier = 1
 	category = { biology }
 	ai_update_type = military
 	weight = 0
