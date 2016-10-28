@@ -47,7 +47,8 @@ function toGraph(sciList){
   
   sciList.forEach(function(term){
     var key = term[1], value = term[2];
-    nodes.push({name : key, image : 'technologies_png/' + key + '.png'});
+    nodes.push({name : key, 
+				image : 'technologies_png/' + key + '.png'});
     var subTree = new parser.AST(value);
     var prerequisites = subTree.find('prerequisites').value();
     if(isArray(prerequisites)){
@@ -60,8 +61,19 @@ function toGraph(sciList){
   return {nodes : nodes, edges : edges}
 }
 
-function render2(graph, width, height, linkDistance, charge, img_w, img_h){
+function render2(graph, localisation, width, height, linkDistance, charge, img_w, img_h){
   var svg = d3.select('svg').attr('width',width).attr('height',height);
+  
+  svg.append('defs').html('<linearGradient id="orange_red" x1="0%" y1="0%" x2="0%" y2="100%">' +
+	'<stop offset="0%" style="stop-color:rgb(18,29,26);' +
+	'stop-opacity:1"/>' +
+	'<stop offset="100%" style="stop-color:rgb(48,67,61);' +
+	'stop-opacity:1"/>' +
+	'</linearGradient>')
+  
+  svg.append("rect")
+    .attr('width',width).attr('height',height)
+	.attr('fill','url(#orange_red)');
   
   var force = d3.layout.force()
                 .nodes(graph.nodes)
@@ -77,7 +89,18 @@ function render2(graph, width, height, linkDistance, charge, img_w, img_h){
                         .append("line")
                         .style("stroke","#aaa")
                         .style("stroke-width",2);
+						
+  var tooltip = d3.select("body")
+    .append("div")
+    .style("position", "absolute")
+    .style("z-index", "10")
+    .style("visibility", "hidden")
+	.style("width", "400px")
+	.style("color","rgb(255,255,255)")
+	.style("font-family",'"Consolas", "Bitstream Vera Sans Mono", "Courier New"')
+    .text("a simple tooltip");
 
+  /*
   var nodes_img = svg.selectAll("image")
                         .data(graph.nodes)
                         .enter()
@@ -88,6 +111,38 @@ function render2(graph, width, height, linkDistance, charge, img_w, img_h){
                             return d.image;
                         })
                         .call(force.drag);
+	*/
+  var nodes_img = svg.selectAll("image")
+                        .data(graph.nodes)
+                        .enter()
+                        .append("image")
+                        .attr("width",img_w)
+                        .attr("height",img_h)
+                        .attr("xlink:href",function(d){
+                            return d.image;
+                        })
+						.on("mouseover", function(e){
+							// data attribute will merged in event object
+							//console.log(e.name);
+							//console.log(localisation[e.name]);
+							//console.log(localisation[e.name+'_desc']);
+							var desc = localisation[e.name][1] + '\\n' + localisation[e.name+'_desc'][1]
+							//console.log(desc);
+							desc = desc.replace(/\\n/g,'<br>');
+							//console.log(desc);
+							tooltip.html(desc);
+							//console.log(tooltip);
+							return tooltip.style("visibility", "visible");
+						})
+						.on("mousemove", function(){
+							return tooltip.style("top",
+							(d3.event.pageY-10)+"px").style("left",(d3.event.pageX+25)+"px");
+						})
+						.on("mouseout", function(){
+							return tooltip.style("visibility", "hidden");
+						})
+                        .call(force.drag);
+
                         
 
   force.on("tick", function(){
@@ -111,7 +166,8 @@ function render2(graph, width, height, linkDistance, charge, img_w, img_h){
                         
 }
 
-function loadData(data){
+function loadData(allData){
+  var data = allData['technology'];
   rawList = Array.prototype.concat.apply([], Object.keys(data).map(function(key){
     return data[key];
   }));
@@ -121,6 +177,6 @@ function loadData(data){
     return term[1];
   });
   //render(sciNameList, 52, 52, 10);
-  render2(toGraph(sciList), 3000, 3000, 50, -800, 52, 52);
+  render2(toGraph(sciList),allData['localisation'] , 3000, 3000, 50, -800, 52, 52);
   console.log('load end');
 }
