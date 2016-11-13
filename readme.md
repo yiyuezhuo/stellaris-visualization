@@ -19,4 +19,4 @@ dds_to_png_map(input_path, output_path)
 
 Created by `d3.js`.
 
-<img src="preview/1.png">
+<img src="preview/2.png">
