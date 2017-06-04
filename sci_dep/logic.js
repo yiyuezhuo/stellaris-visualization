@@ -1,6 +1,7 @@
 
 var board = document.getElementById('board');
 var rawList, sciList, tree, sciNameList;
+var technologies_png_path = 'stellaris_asset/technologies_png/';
 
 function isArray(obj) { 
   return Object.prototype.toString.call(obj) === '[object Array]';   
@@ -30,7 +31,7 @@ function render(nameList, height, width, rown){
   d3.select('#board').selectAll('img').data(nameList).enter()
     .append('img')
     .attr('src',function(name){
-      return 'technologies_png/' + name + '.png';
+      return technologies_png_path + name + '.png';
     })
     .attr('style',function(name, i){
       return 'position:absolute;transform:translate(' + (i % rown) * width + 'px,' + Math.floor(i/rown) * height + 'px)'
@@ -48,7 +49,7 @@ function toGraph(sciList){
   sciList.forEach(function(term){
     var key = term[1], value = term[2];
     nodes.push({name : key, 
-				image : 'technologies_png/' + key + '.png'});
+				image : technologies_png_path + key + '.png'});
     var subTree = new parser.AST(value);
     var prerequisites = subTree.find('prerequisites').value();
     if(isArray(prerequisites)){
