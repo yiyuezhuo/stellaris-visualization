@@ -6,7 +6,7 @@ Created on Sun Jul 17 16:20:08 2016
 """
 
 import pilgrim.utils
-import helper_string
+#import helper_string
 import os
 
 from PIL import ImageFile,Image
@@ -15,7 +15,7 @@ from struct import unpack,pack
 #ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 def get_image(full_path):
-    full_path = helper_string.HelperString.to_uni(full_path)
+    #full_path = helper_string.HelperString.to_uni(full_path)
 
     
     decoder =  pilgrim.utils.getDecoder(full_path)
